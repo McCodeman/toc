@@ -1,0 +1,201 @@
+== Antrea Sandbox Project Proposal
+
+*Name of project:* Antrea
+
+*Description:* Antrea is a https://github.com/containernetworking/cni[Container
+Network Interface (CNI)] implementation that provides network connectivity to
+Kubernetes pods and enforces network traffic filtering by rendering
+https://kubernetes.io/docs/concepts/services-networking/network-policies/[Kubernetes
+Network Policies]. Using Kubernetes-native controller, deployment, and resource
+extension patterns, Antrea simplifies cluster network administration and policy
+enforcement allowing operators and developers to benefit from the maturity,
+performance and flexibility of an https://www.openvswitch.org/[Open vSwitch]
+software defined network connecting their container workloads.
+
+=== Why does CNCF need a Kubernetes CNI implementation?
+
+The CNCF has both container orchestration and runtime implementations; however,
+it is missing a Kubernetes CNI network plugin implementation and only provides
+the Container Network Interface (CNI) specification. Every non-trivial
+Kubernetes cluster requires a robust container networking plugin to provide
+network connectivity and traffic filtering for pods.
+
+Currently, only basic pod network traffic filtering is normalized across
+Kubernetes network plugins with the
+https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.17/#networkpolicy-v1-networking-k8s-io[Kubernetes
+Network Policy API] specification. Many organizations require advanced
+primitives for specifying globally scoped traffic policies, fine-grained
+workload selection criteria for filtering actions and assigning policy, and
+hierarchical primitives for specifying policy precedence and access
+authorizations. These features as well as transit configuration and identity
+enforcement intents are missing in the normative Kubernetes API specifications.
+
+Antrea's design trajectory and desire to democratize and advance the Kubernetes
+CNI network plugin feature set and normative API would be a natural fit to fill
+this gap for the CNCF. A donation would ensure a vendor-neutral home for the
+project, while increasing community involvement and feature velocity, and a
+tighter alignment between Antrea and other CNCF projects.
+
+=== Alignment with CNCF
+
+Our team believes the CNCF offers the best environment to foster open
+collaboration and build community for project Antrea. Antrea's core mission is
+to make container network connectivity ubiquitous, secure, and agnostic to any
+underlying IaaS or cloud strategy. The CNCF's mission is to "..empower
+organizations to build and run scalable applications in modern, dynamic
+environments such as *public*, *private*, and *hybrid clouds*" with cloud native
+technologies. We believe Antrea, as a Kubernetes CNI network plugin, would
+compliment the existing CNCF project portfolio by democratizing the access to
+and evolution of ubiquitous and secure container connectivity.
+
+=== Asks from CNCF
+
+* *Governance* - General access to staff to provide advice, and help optimize
+and document our governance process
+* *Infrastructure* for CI/CD and IaaS provider testing
+* *CNCF devstat integration*
+* *Vendor-neutral home* for Antrea
+
+=== Features
+
+The mission of Antrea is to securely interconnect Kubernetes workloads wherever
+they are located.
+
+==== Current Features
+Here are some of the key features of Antrea:
+
+* CNI implementation utilizes Open vSwitch for IPv4 packet transit and traffic filtering
+* Deployed using Kubernetes apps resources and CRDs
+* Kubernetes Network Policy API enforcement
+* https://github.com/vmware-tanzu/octant[Octant] UI plugin
+* Data and Control state consumable via CRD
+* Audit logging
+* Support for Geneve, VXLAN, GRE, and STT network overlays
+* IPSec when using GRE tunnels for intra-node traffic
+
+==== Features In-flight
+
+The Antrea team is currently working on improving Antrea, including:
+
+* No-encapsulation pure layer 3 and hybrid internode transit
+* Prometheus formatted metrics
+* IPSec for additional encapsulation modes
+
+==== Features on our Roadmap
+
+Antrea's youth and pliability afford re-evaluation of feature implementation and
+progression as we strive to achieve use-case satisfaction parity with existing
+CNI providers. 
+
+* Windows Support
+* Network Policy Only Mode
+* Additional cloud solutions
+* Enhanced traffic matching and endpoint selection criteria
+* Global policies
+* Hierarchical policy precedence
+* IPv6 and dual-stack support
+* Host network policy enforcement
+* QoS and traffic policing
+* Pod identity as traffic match for Network Policy
+* Non-disruptive upgrades
+* _May move this section off to an external roadmap.md_
+
+The project welcomes contributions of any kind: code, documentation, bug reporting via issues, and project management to help track and prioritize workstreams.
+
+=== Use Cases
+
+The following is a list of common use-cases for Antrea users:
+
+* *Kubernetes L2 Network Overlay* - users can deploy Antrea into a Kubernetes
+cluster to provide an L2 overlay network for enabling pod-to-pod network
+connectivity. 
+* *Kubernetes Network Policy* - users can deploy Antrea into a
+Kubernetes cluster to enforce network traffic filtering at the pod edge as
+specified by the Kubernetes NetworkPolicy API.
+
+* *Encrypted Internode Traffic* - cluster administrators can encrypt internode
+pod and node traffic using IPSec.
+
+Additionally, the project plans to take up the following use cases:
+
+* *Delegated Policy Precedence and Access* - specify aggregate policy
+precedence and RBAC access using named groups thus providing a hierarchical
+policy delegation.
+
+_IN PROGRESS -- a few more use cases are being defined_
+
+=== Project Timeline and Snapshot
+
+* In June 2019, Antrea started as a project within VMware's Networking and
+Security organization as a lightweight and performant networking plugin based on
+Open vSwitch for Kubernetes clusters. The project has been an open source
+project from the outset to allow more developers from the community to use and
+contribute to the project with a goal of producing a Kubernetes CNI that is able
+to meet the complex multi- and hybrid-cloud requirements of modern cloud native
+workloads.
+* Antrea is currently being integrated into multiple VMware Kubernetes product lines
+scheduled for release this year.
+* In January 2010, Antrea passed 500 stars on Github and currently has 12
+contributors.
+
+=== Production Users
+
+Antrea is gaining features rapidly but as of this time, does not have production
+users. Antrea anticipates production usage to increase upon the release of
+future near-term VMware products and as community interest grows.
+
+=== CNCF Donation Details
+
+* *Preferred Maturity Level*: Sandbox 
+* *Sponsors:* TBD, considering Joe Beda
+(depends on timing), Brendan Burns, Matt Klein
+* *License:* Apache 2 
+* *Source control repositories / issue tracker:* https://github.com/vmware-tanzu/antrea,
+with GitHub project board tracking engineering work. _Will be moved to
+github.com/projectantrea organization_ 
+* *Infrastructure Required:* Infrastructure for CI / CD _(currently using GitHub Actions)_ 
+* *Website:* https://antrea.io/. _(We will modify currently VMware styled page to match
+https://github.com/cncf/foundation/blob/master/website-guidelines.md[CNCF
+website guidelines])_ 
+* *Release Methodology and Mechanics:* We currently do
+feature releases every 4 weeks (and minor releases when needed). 
+* *External dependencies (including licenses):* 
+** *Go:*
+https://github.com/golang/go/blob/master/LICENSE 
+** *Open vSwitch:* Apache 2 
+** *Open Consensus:* Apache 2 
+** _Updates IN PROGRESS.._
+
+=== Communication Channels and Social Media Accounts
+
+All Antrea project discussion, planning, and support takes place over the following
+communication channels:
+
+* Slack -- https://kubernetes.slack.com/messages/CR2J23M0X[#antrea] channel on
+http://slack.k8s.io/[Kubernetes Slack]
+* Weekly Meetings
+** https://github.com/vmware-tanzu/antrea/wiki/Community-Meetings[Meeting
+Minutes]
+** https://www.youtube.com/playlist?list=PLH5zTfQ3otSA6EOYDNb-MvcQRXACdCbQw[Meeting
+Recordings]
+* Mailing Lists (Google Groups)
+** https://groups.google.com/forum/#!forum/projectantrea-announce[projectantrea-announce]
+for important project announcements
+** https://groups.google.com/forum/#!forum/projectantrea[projectantrea] for
+updates about Antrea or provide feedback
+** https://groups.google.com/forum/#!forum/projectantrea-dev[projectantrea-dev]
+to participate in discussions on Antrea development
+* *Twitter:*  https://twitter.com/ProjectAntrea[@ProjectAntrea]
+
+=== Contributor Statistics
+
+Antrea has had 12 VMware committers since the project's inception.
+
+=== CNI Landscape
+
+
+
+=== Appendices
+
+==== Architecture
+
